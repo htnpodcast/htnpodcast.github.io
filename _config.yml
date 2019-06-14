@@ -80,3 +80,12 @@ theme: maupassant
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type:
+
+feed:
+    type: atom
+    path: atom.xml
+    limit: 20
+    hub:
+    content:
+    content_limit:
+    content_limit_delim: ' '

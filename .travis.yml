@@ -26,6 +26,7 @@ install:
 script:
 - npm install hexo-renderer-pug --save
 - npm install hexo-renderer-sass --save
+- npm install hexo-generator-feed --save
 - hexo clean
 - hexo generate
 after_success:
