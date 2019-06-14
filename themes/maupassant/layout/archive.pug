@@ -14,7 +14,6 @@ block content
     .post-archive
         //Use lodash to classify posts. See https://lodash.com/docs#groupBy
         each posts, year in _.groupBy(page.posts.toArray(), function(p){return -p.date.format('YYYY')})
-          h2= -year
           ul.listing
             for post in posts
               li
