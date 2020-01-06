@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>DAO.FM</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<div class="content">
+				<div class="inner">
+					<div style="text-align:center">
+						<audio id="item" width="420" autoplay controls>
+							<source src="test.mp4" type="audio/mp3">
+							    DAO 提示：您浏览器不支持 HTML5 audio 标签。 </audio><br>
+					</div>
+				</div>
+			</div>
+			<nav>
+				<ul>
+					<li><a onclick="delPlaySpeed()">减速</a></li>
+					<li><a id="speed"></a></li>
+					<li><a onclick="addPlaySpeed()">加速</a></li>
+					<!--<li><a href="#elements">Elements</a></li>-->
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+		</footer>
+
+	</div>
+
+	<!-- BG -->
+	<div id="bg"></div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script>
+		getmp3();
+		var item = $('#item')[0];
+		var speed = $('#item')[0].playbackRate;
+		getPlaySpeed();
+		function getPlaySpeed() {
+			$('#speed')[0].innerHTML = "Speed: " + speed;
+		}
+		function addPlaySpeed() {
+			item.playbackRate = speed + 0.25;
+			speed += 0.25;
+			getPlaySpeed();
+		}
+		function delPlaySpeed() {
+			item.playbackRate = speed - 0.25;
+			speed -= 0.25;
+			getPlaySpeed();
+		}
+		function getmp3() {
+			$('#item').attr("src", "https://cast.jjldbk.com/series/" + window.location.hash.replace('#', ''));
+		}
+	</script>
+
+</body>
+
+</html>
