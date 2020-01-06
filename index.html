@@ -6,6 +6,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="assets/css/player.css" />
 	<noscript>
 		<link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
@@ -18,11 +19,9 @@
 		<!-- Header -->
 		<header id="header">
 			<div class="content">
-				<div class="inner">
-					<div style="text-align:center">
-						<audio id="item" width="420" autoplay controls>
-							<source src="test.mp4" type="audio/mp3">
-							    DAO 提示：您浏览器不支持 HTML5 audio 标签。 </audio><br>
+				<div>
+					<div class="container">
+						<div class="music"></div>
 					</div>
 				</div>
 			</div>
@@ -52,32 +51,42 @@
 	<script src="assets/js/breakpoints.min.js"></script>
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
+	<script src="assets/js/meplayer.min.js"></script>
 	<script>
-		getmp3();
-		var item = $('#item')[0];
-		var speed = $('#item')[0].playbackRate;
-		getPlaySpeed();
+		mePlayer({
+			music: {
+				src: "https://cast.jjldbk.com/series/" + window.location.hash.replace('#', ''),
+				title: 'DAO.FM',
+				author: '津津乐道播客',
+				loop: true,
+				cover: 'images/dao.png'
+			},
+			target: '.music',
+			autoplay: false
+		})
+		$('.meplayer-control-play').click(function(){
+			getPlaySpeed()
+		})
+
+		$('.meplayer-isplaying')[0].removeClass("meplayer-isplaying");
+
+		window.setTimeout(mePlayer.play, 1500)
 		function getPlaySpeed() {
-			$('#speed')[0].innerHTML = "Speed: " + speed;
+			$('#speed')[0].innerHTML = "Speed: " + $('audio')[0].playbackRate;
 		}
 		function addPlaySpeed() {
-			item.playbackRate = speed + 0.25;
-			speed += 0.25;
+			$('audio')[0].playbackRate = $('audio')[0].playbackRate + 0.25;
 			getPlaySpeed();
 		}
 		function delPlaySpeed() {
-			item.playbackRate = speed - 0.25;
-			speed -= 0.25;
+			$('audio')[0].playbackRate = $('audio')[0].playbackRate - 0.25;
 			getPlaySpeed();
 		}
 		function reSetPlaySpeed() {
-			item.playbackRate = 1;
-			speed = 1;
+			$('audio')[0].playbackRate = 1;
 			getPlaySpeed();
 		}
-		function getmp3() {
-			$('#item').attr("src", "https://cast.jjldbk.com/series/" + window.location.hash.replace('#', ''));
-		}
+
 	</script>
 
 </body>
