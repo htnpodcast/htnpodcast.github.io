@@ -29,7 +29,7 @@
 			<nav>
 				<ul>
 					<li><a onclick="delPlaySpeed()">减速</a></li>
-					<li><a id="speed"></a></li>
+					<li><a id="speed" onclick="reSetPlaySpeed()"></a></li>
 					<li><a onclick="addPlaySpeed()">加速</a></li>
 					<!--<li><a href="#elements">Elements</a></li>-->
 				</ul>
@@ -68,6 +68,11 @@
 		function delPlaySpeed() {
 			item.playbackRate = speed - 0.25;
 			speed -= 0.25;
+			getPlaySpeed();
+		}
+		function reSetPlaySpeed() {
+			item.playbackRate = 1;
+			speed = 1;
 			getPlaySpeed();
 		}
 		function getmp3() {
