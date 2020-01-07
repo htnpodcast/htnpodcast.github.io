@@ -30,9 +30,9 @@
 					<li><a onclick="delPlaySpeed()">减速</a></li>
 					<li><a id="speed" onclick="reSetPlaySpeed()">尚未开始播放</a></li>
 					<li><a onclick="addPlaySpeed()">加速</a></li>
-					<!--<li><a href="#elements">Elements</a></li>-->
 				</ul>
 			</nav>
+			<a href="" id="down">Download</a>
 		</header>
 
 		<!-- Footer -->
@@ -53,6 +53,7 @@
 	<script src="assets/js/main.js"></script>
 	<script src="assets/js/meplayer.min.js"></script>
 	<script>
+		$('#down').attr("href", "https://cast.jjldbk.com/series/" + window.location.hash.replace('#', ''));
 		mePlayer({
 			music: {
 				src: "https://cast.jjldbk.com/series/" + window.location.hash.replace('#', ''),
@@ -64,7 +65,7 @@
 			target: '.music',
 			autoplay: false
 		})
-		$('.meplayer-control-play').click(function(){
+		$('.meplayer-control-play').click(function () {
 			getPlaySpeed()
 		})
 
