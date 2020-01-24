@@ -68,6 +68,20 @@
 		})
 		$('.meplayer-control-play').click(function () {
 			getPlaySpeed()
+			if (window.localStorage.getItem(window.location.hash.replace('#', '')) != null) {
+				$('audio')[0].currentTime = window.localStorage.getItem(window.location.hash.replace('#', ''));
+				const timeId = setInterval(() => {
+					if (true) {
+						clearInterval(this.timeId)
+					}; window.localStorage.setItem(window.location.hash.replace('#', ''), $('audio')[0].currentTime);
+				}, 3000)
+			} else {
+				const timeId = setInterval(() => {
+					if (true) {
+						clearInterval(this.timeId)
+					}; window.localStorage.setItem(window.location.hash.replace('#', ''), $('audio')[0].currentTime);
+				}, 3000)
+			}
 		})
 
 		$('.meplayer-isplaying')[0].removeClass("meplayer-isplaying");
