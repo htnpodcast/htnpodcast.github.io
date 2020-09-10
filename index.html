@@ -93,7 +93,7 @@
         function playItem(num) {
             var mp3url;
             $.ajax({
-                url: "https://apis.daopub.com/api/series/" + num,
+                url: "https://apis.daopub.com/api/series/" + parseInt(num),
                 success: function (data) {
                     console.log(data)
                     $('#titletext')[0].innerHTML = data[0].title
@@ -131,7 +131,7 @@
                     ap.toggle()
                 }
             })
-            $('#img').css("background", "url(https://cdn.daopub.com/images/" + num + "-banner.jpg")
+            $('#img').css("background", "url(https://cdn.daopub.com/images/" + parseInt(num) + "-banner.jpg")
             $('#img').css("background-size", "100%")
         }
 
