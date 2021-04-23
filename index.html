@@ -54,7 +54,7 @@
         var ap;
         function getRss() {
             $.ajax({
-                url: "https://feeds.jjldbk.com/all.xml",
+                url: "https://feeds.daopub.com/all.xml",
                 success: function (data) {
                     rss = []
                     var $xml = $(data);
@@ -93,7 +93,7 @@
         function playItem(num) {
             var mp3url;
             $.ajax({
-                url: "https://apis.daopub.com/api/series/" + window.location.hash.replace('#', ''),//parseInt(num),
+                url: "https://apis.daopub.com/api/series/" + parseInt(num),
                 success: function (data) {
                     console.log(data)
                     $('#titletext')[0].innerHTML = data[0].title
