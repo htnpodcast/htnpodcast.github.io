@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>DAO.FM</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/APlayer.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_2052940_9vnesjqqznl.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-fluid main">
+        <div class="row">
+            <div class="col-sm" id="players">
+                <div id="player"></div>
+            </div>
+        </div>
+        <div id="img">
+        </div>
+        <div id="imgdao">
+        </div>
+        <div id="tool">
+            <i onclick="if(sw==1){$('#tool').css('color','rgba(255,255,255,.1)');$('#players').hide();sw=0}else{$('#players').show();$('#tool').css('color','rgba(255,255,255,1)');sw=1}"
+                class="iconfont icon-video"></i>
+            <i onclick="delPlaySpeed()" class="iconfont icon-doubleleft"></i>
+            <i onclick="ap.toggle();$('.icon-timeout').hide();$('.icon-play-circle').show()"
+                class="iconfont icon-timeout" style="display: none;"></i>
+            <i onclick="ap.toggle();$('.icon-play-circle').hide();$('.icon-timeout').show()"
+                class="iconfont icon-play-circle"></i>
+            <i onclick="addPlaySpeed()" class="iconfont icon-doubleright"></i>
+            <i onclick="reSetPlaySpeed()" class="iconfont icon-sync"></i>
+            <i onclick="nextItem()" class="iconfont icon-right-circle"></i>
+        </div>
+        <div class="row" id="title">
+            <div class="col" id="titletext">
+                津津乐道播客网络 - htnpodcast
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/APlayer.min.js"></script>
+    <script>
+        var rss = [];
+        getRss();
+        var sw = 1;
+        var mode = 1; //1-点播,2-轮播
+
+        var ap;
+        function getRss() {
+            $.ajax({
+                url: "https://feeds.jjldbk.com/all.xml",
+                success: function (data) {
+                    rss = []
+                    var $xml = $(data);
+                    $xml.find("item").each(function () {
+                        var $this = $(this),
+                            item = {
+                                title: $this.find("title").text(),
+                                link: $this.find("link").text(),
+                                description: $this.find("description").text(),
+                                pubDate: $this.find("pubDate").text(),
+                                author: $this.find("author").text()
+                            }
+                        rss.push(item)
+                    });
+                }
+            })
+        }
+        if (window.location.hash.replace('#', '') != "") {
+            playItem(window.location.hash.replace('#', ''))
+        } else {
+            nextItem();
+        }
+        function randomNum(minNum, maxNum) {
+            switch (arguments.length) {
+                case 1:
+                    return parseInt(Math.random() * minNum + 1, 10);
+                    break;
+                case 2:
+                    return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+                    break;
+                default:
+                    return 0;
+                    break;
+            }
+        }
+        function playItem(num) {
+            var mp3url;
+            $.ajax({
+                url: "https://apis.daopub.com/api/series/" + parseInt(num),
+                success: function (data) {
+                    console.log(data)
+                    $('#titletext')[0].innerHTML = data[0].title
+                    mp3url = data[0].url
+                    console.log(mp3url)
+                    ap = new APlayer({
+                        container: document.getElementById('player'),
+                        mini: false,
+                        autoplay: false,
+                        theme: '#FADFA3',
+                        loop: 'all',
+                        order: 'random',
+                        preload: 'auto',
+                        volume: 0.7,
+                        mutex: true,
+                        listFolded: false,
+                        listMaxHeight: 90,
+                        lrcType: 3,
+                        audio: [
+                            {
+                                name: '津津乐道播客',
+                                artist: 'DAO.FM',
+                                url: mp3url,
+                                cover: 'images/dao.png',
+                                theme: '#f00'
+                            }
+                        ]
+                    });
+                    ap.lrc.hide();
+                    reSetPlaySpeed();
+                    timer();
+                    ap.on('ended', function () {
+                        nextItem();
+                    });
+                    ap.toggle()
+                }
+            })
+            $('#img').css("background", "url(https://cdn.daopub.com/images/" + parseInt(num) + "-banner.jpg")
+            $('#img').css("background-size", "100%")
+        }
+
+        function nextItem() {
+            getRss();
+            if (window.location.hash.replace('#', '') != "" || mode == 2) {
+                ap.destroy()
+            }
+            endnum = rss.length
+            if (rss.length == 0) {
+                endnum = 200
+            }
+            num = randomNum(1, endnum)
+            console.log(num)
+            mode = 2;
+            playItem(num)
+        }
+        var timeId
+        function timer() {
+            if (mode == 1) {
+                if (window.localStorage.getItem(window.location.hash.replace('#', '')) != null) {
+                    ap.audio.currentTime = window.localStorage.getItem(window.location.hash.replace('#', ''));
+                    timeId = setInterval(() => {
+                        if (true) {
+                            clearInterval(timeId)
+                        }; window.localStorage.setItem(window.location.hash.replace('#', ''), ap.audio.currentTime);
+                    }, 5000)
+                } else {
+                    timeId = setInterval(() => {
+                        if (true) {
+                            clearInterval(timeId)
+                        }; window.localStorage.setItem(window.location.hash.replace('#', ''), ap.audio.currentTime);
+                    }, 5000)
+                }
+            } else {
+                window.clearInterval(timeId)
+            }
+        }
+
+        function getPlaySpeed() {
+            //$('#speed')[0].innerHTML = "Speed: " + ap.audio.playbackRate;
+        }
+        function addPlaySpeed() {
+            ap.audio.playbackRate = ap.audio.playbackRate + 0.25
+            getPlaySpeed();
+        }
+        function delPlaySpeed() {
+            ap.audio.playbackRate = ap.audio.playbackRate - 0.25
+            getPlaySpeed();
+        }
+        function reSetPlaySpeed() {
+            ap.audio.playbackRate = 1;
+            getPlaySpeed();
+        }
+    </script>
+
+</body>
+
+</html>

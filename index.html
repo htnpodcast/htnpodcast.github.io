@@ -93,7 +93,7 @@
         function playItem(num) {
             var mp3url;
             $.ajax({
-                url: "https://apis.daopub.com/api/series/" + parseInt(num),
+                url: "https://apis.daopub.com/api/series/" + window.location.hash.replace('#', ''),//parseInt(num),
                 success: function (data) {
                     console.log(data)
                     $('#titletext')[0].innerHTML = data[0].title
